@@ -1,3 +1,16 @@
+require 'routes_constraints'
+
 Rails.application.routes.draw do
-  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+  namespace :status do
+    get :static
+    get :production
+    get :staging
+    get :development
+  end
+
+  namespace :api do
+    scope module: :v1, constraints: ApiVersionConstraint.new(version: 1) do
+      post 'user_token' => 'user_token#create'
+    end
+  end
 end
