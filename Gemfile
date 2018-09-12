@@ -6,6 +6,9 @@ ruby '2.4.1'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.2.1'
 
+# Use sqlite3 as the database for Active Record
+gem 'sqlite3'
+
 # Use Puma as the app server
 gem 'puma', '~> 3.11'
 
@@ -15,11 +18,18 @@ gem 'jbuilder', '~> 2.5'
 # Use ActiveModel has_secure_password
 gem 'bcrypt', '~> 3.1.7'
 
-# ORM for Redis (advanced key-value storage) with ActiveRecord API
-gem 'redis_orm', '~> 0.7'
+# Ohm is a library that allows to store an object in Redis
+gem 'ohm', '~> 3.1', '>= 3.1.1'
+gem 'ohm-validations', '~> 1.1'
 
 # Rails REST API documentation tool
 gem 'apipie-rails', '~> 0.5.10'
+
+# Authentication solution for Rails based on JWT
+gem 'knock', '~> 2.1', '>= 2.1.1'
+
+# Easiest way to manage multi-environment settings
+gem 'config', '~> 1.7'
 
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.1.0', require: false
