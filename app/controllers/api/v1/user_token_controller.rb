@@ -1,11 +1,5 @@
 module Api::V1
   class UserTokenController < Knock::AuthTokenController
     skip_before_action :verify_authenticity_token
-
-    private
-
-    def entity_class
-      Physical::User
-    end
   end
 end
