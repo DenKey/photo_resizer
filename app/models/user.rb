@@ -1,6 +1,7 @@
 class User < Ohm::Model
   include BCrypt
   include Ohm::Validations
+  include OhmExtends
 
   attribute :email
   attribute :password_digest
@@ -12,10 +13,6 @@ class User < Ohm::Model
   class << self
     def from_token_payload(payload)
       self[payload['sub']]
-    end
-
-    def find_by(attrs)
-      find(attrs).first
     end
   end
 
