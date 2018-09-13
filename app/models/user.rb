@@ -24,6 +24,7 @@ class User < Ohm::Model
   end
 
   def password=(new_password)
+    return if password_invalid?(new_password)
     @password = Password.create(new_password)
     self.password_digest = @password
   end
@@ -50,6 +51,10 @@ class User < Ohm::Model
 
   def validation_failed
     raise OhmError::ValidationFailed.new(attributes: errors.keys)
+  end
+
+  def password_invalid?(password)
+    password.blank? || password.size < 6
   end
 end
 
