@@ -1,6 +1,7 @@
 api:
   errors:
     record_not_found: "Requested record not found"
-    generic: "Sorry, there seems to be a problem. Please try again in a little while."
-    parameters_error: "Sorry, something wrong with data that we get from you. Please try again."
-    email_not_unique: "Sorry, selected email already used. Please change another email or try to sign in."
+    generic: "There seems to be a problem. Please try again in a little while."
+    parameters_error: "Something wrong with data that we get from you. Please try again."
+    email_not_unique: "Selected email already used. Please change another email or try to sign in."
+    ad_ident_not_unique: "Current device already enrolled."

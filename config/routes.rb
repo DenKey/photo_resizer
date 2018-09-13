@@ -13,5 +13,9 @@ Rails.application.routes.draw do
       post 'user_token' => 'user_token#create'
       post 'user_enrollment' => 'user_enrollment#create'
     end
+
+    scope module: :v2, constraints: ApiVersionConstraint.new(version: 2) do
+      post 'device_enrollment' => 'device_enrollment#create'
+    end
   end
 end
