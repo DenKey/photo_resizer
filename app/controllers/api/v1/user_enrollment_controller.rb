@@ -14,7 +14,8 @@ module Api::V1
       property :data, NilClass, :desc => "Empty field"
       property :errors, Array, of: Hash, :desc => "Arrays wih errors hash" do
         property :code, String, :desc => "Error code"
-        property :message, String, :desc => "Error message"
+        property :message, String, :desc => "Ruby error message"
+        property :public_message, String, :desc => "Prepared error message for client"
       end
     end
     def create
@@ -22,10 +23,8 @@ module Api::V1
         User.create!(enroll_params)
 
         render_json
-      rescue OhmError::ValidationFailed
-        raise Api::MissingOrInvalidParametersError
-      rescue Ohm::UniqueIndexViolation
-        raise Api::EmailNotUnique
+      rescue Mongoid::Errors::Validations => e
+        raise Api::MissingOrInvalidParametersError.new(e.document.errors.full_messages.join(", "))
       end
     end
 

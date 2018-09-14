@@ -1,24 +1,14 @@
-class Build < Ohm::Model
-  include Ohm::Validations
-  include OhmExtends
+class Build
+  include Mongoid::Document
 
   # Support levels available for application
   # i was skip way for creating Build,
   # it may work from console or directly from DB
   SUPPORT_LEVELS = %w{supported unsupported deprecated}
 
-  attribute :build_number
-  attribute :support_level
+  field :build_number, type: String
+  field :support_level, type: String
 
-  unique :build_number
-
-  index :build_number
-
-  protected
-
-  def validate
-    assert_present(:build_number)
-    assert_present(:support_level)
-    assert_member(:support_level, SUPPORT_LEVELS)
-  end
+  validates :build_number, presence: true, uniqueness: true
+  validates :support_level, presence: true, inclusion: SUPPORT_LEVELS
 end

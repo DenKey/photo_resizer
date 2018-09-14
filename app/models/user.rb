@@ -1,18 +1,18 @@
-class User < Ohm::Model
+class User
   include BCrypt
-  include Ohm::Validations
-  include OhmExtends
+  include Mongoid::Document
+  include Mongoid::Timestamps::Created
 
-  attribute :email
-  attribute :password_digest
+  field :email, type: String
+  field :password_digest, type: String
 
-  unique :email
-
-  index :email
+  validates :email, presence: true, uniqueness: true
+  validates_format_of  :email, :with => /\A[\+A-Z0-9\._%-]+@([A-Z0-9-]+\.)+[A-Z]{2,4}\z/i
+  validates :password_digest, presence: true
 
   class << self
     def from_token_payload(payload)
-      self[payload['sub']]
+      self.find_by(_id: payload["sub"]["$oid"])
     end
   end
 
@@ -21,37 +21,12 @@ class User < Ohm::Model
   end
 
   def password=(new_password)
-    return if password_invalid?(new_password)
     @password = Password.create(new_password)
     self.password_digest = @password
   end
 
   def authenticate(unencrypted_password)
     password == unencrypted_password
-  end
-
-  def save!
-    if self.save
-      self
-    else
-      validation_failed
-    end
-  end
-
-  protected
-
-  def validate
-    assert_present(:email)
-    assert_present(:password_digest)
-    assert_email(:email)
-  end
-
-  def validation_failed
-    raise OhmError::ValidationFailed.new(attributes: errors.keys)
-  end
-
-  def password_invalid?(password)
-    password.blank? || password.size < 6
   end
 end
 

@@ -14,7 +14,8 @@ module Api
       end
       property :errors, Array, of: Hash, :desc => "Arrays wih errors hash" do
         property :code, String, :desc => "Error code"
-        property :message, String, :desc => "Error message"
+        property :message, String, :desc => "Ruby error message"
+        property :public_message, String, :desc => "Prepared error message for client"
       end
     end
     def show
@@ -24,7 +25,11 @@ module Api
     private
 
     def get_build
-      @build = Build.find_by(build_params) or raise Api::RecordNotFound
+      begin
+        @build = Build.find_by(build_params)
+      rescue Mongoid::Errors::DocumentNotFound
+        raise Api::RecordNotFound
+      end
     end
 
     def build_params

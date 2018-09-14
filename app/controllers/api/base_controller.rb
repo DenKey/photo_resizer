@@ -24,7 +24,8 @@ module Api
 
       error_hash = {
         code: e.try(:code) || "UNKNOWN_ERROR",
-        message: public_message
+        message: e.message,
+        public_message: public_message
       }
 
       render_json(errors: [error_hash], status: status)

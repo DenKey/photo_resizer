@@ -1,41 +1,24 @@
-class Device < Ohm::Model
-  include Ohm::Validations
-  include OhmExtends
+class Device
+  include Mongoid::Document
+  include Mongoid::Timestamps::Created
 
-  attribute :advertising_identifier
-  attribute :imei
-  attribute :meid
-  attribute :token
+  field :advertising_identifier, type: String
+  field :imei, type: String
+  field :meid, type: String
+  field :token, type: String
 
-  unique :advertising_identifier
+  validates :advertising_identifier, presence: true, uniqueness: true
+  validates :token, presence: true, uniqueness: true
 
-  index :advertising_identifier
-  index :imei
-  index :meid
+  after_initialize :set_token
 
-  def save!
-   self.token = get_digest
-    if self.save
-      self
-    else
-      validation_failed
-    end
+  private
+
+  def set_token
+    self.token = generate_token
   end
 
-  protected
-
-  def validate
-    assert_present(:advertising_identifier)
-    assert_present(:imei)
-    assert_present(:meid)
-    assert_present(:token)
-  end
-
-  def validation_failed
-    raise OhmError::ValidationFailed.new(attributes: errors.keys)
-  end
-
-  def get_digest
-    Digest::SHA256.hexdigest(advertising_identifier.to_s + imei.to_s + meid.to_s)
+  def generate_token
+    Digest::SHA256.hexdigest(advertising_identifier + imei + meid)
   end
 end

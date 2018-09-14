@@ -18,7 +18,8 @@ module Api::V2
       end
       property :errors, Array, of: Hash, :desc => "Arrays wih errors hash" do
         property :code, String, :desc => "Error code"
-        property :message, String, :desc => "Error message"
+        property :message, String, :desc => "Ruby error message"
+        property :public_message, String, :desc => "Prepared error message for client"
       end
     end
     def create
@@ -28,22 +29,23 @@ module Api::V2
     private
 
     def set_device
-      Rails.logger.info enroll_params
       begin
-        @device = Device.find_by(enroll_params) || Device.create!(enroll_params)
-      rescue OhmError::ValidationFailed
-        raise Api::MissingOrInvalidParametersError
-      rescue Ohm::UniqueIndexViolation
-        raise Api::AdIdentNotUnique
+        @device = Device.find_by(enroll_params)
+      rescue Mongoid::Errors::DocumentNotFound
+        create_device
+      end
+    end
+
+    def create_device
+      begin
+        @device = Device.create!(enroll_params)
+      rescue Mongoid::Errors::Validations => e
+        raise Api::MissingOrInvalidParametersError.new(e.document.errors.full_messages.join(", "))
       end
     end
 
     def enroll_params
-      params.
-        require(:enroll).
-        permit(:advertising_identifier, :imei, :meid).
-        to_hash.
-        symbolize_keys
+      params.require(:enroll).permit(:advertising_identifier, :imei, :meid)
     end
   end
 end

@@ -12,15 +12,8 @@ gem 'sqlite3'
 # Use Puma as the app server
 gem 'puma', '~> 3.11'
 
-# Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
-gem 'jbuilder', '~> 2.5'
-
 # Use ActiveModel has_secure_password
 gem 'bcrypt', '~> 3.1.7'
-
-# Ohm is a library that allows to store an object in Redis
-gem 'ohm', '~> 3.1', '>= 3.1.1'
-gem 'ohm-validations', '~> 1.1'
 
 # Rails REST API documentation tool
 gem 'apipie-rails', '~> 0.5.10'
@@ -30,6 +23,9 @@ gem 'knock', '~> 2.1', '>= 2.1.1'
 
 # Easiest way to manage multi-environment settings
 gem 'config', '~> 1.7'
+
+# Mongoid is an ODM Framework for MongoDB
+gem 'mongoid', '~> 7.0', '>= 7.0.1'
 
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.1.0', require: false
