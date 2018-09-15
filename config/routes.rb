@@ -11,19 +11,18 @@ Rails.application.routes.draw do
   end
 
   namespace :api do
-    get 'build/:build_number' => 'build#show'
-
     scope module: :v1, constraints: ApiVersionConstraint.new(version: 1) do
+      get 'build/:build_number' => 'build#show'
       post 'user_token' => 'user_token#create'
       post 'user_enrollment' => 'user_enrollment#create'
     end
 
     scope module: :v2, constraints: ApiVersionConstraint.new(version: 2) do
       post 'device_enrollment' => 'device_enrollment#create'
-      get 'images' => 'image#index'
-      post 'images' => 'image#create'
-      put 'images/:id' => 'image#update'
-      get 'images/:id' => 'image#show', as: :image
+      get 'images' => 'images#index'
+      post 'images' => 'images#create'
+      put 'images/:id' => 'images#update'
+      get 'images/:id' => 'images#show', as: :image
     end
   end
 end

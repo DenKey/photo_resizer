@@ -1,31 +1,14 @@
 module Api::V2
-  class ImageController < BaseController
-    include Api::Concerns::ApipieDefinitions
+  class ImagesController < BaseController
+    include Api::V2::ImagesDoc
+
     before_action :set_device
     before_action :set_image, only: [:show, :update]
-    skip_before_action :authenticate_user
 
-    api :GET, "api/images", "Images list "
-    error :code => 404, :desc => "Device not found"
-    error :code => 500, :desc => "Internal server error"
-    formats ['file']
-    returns :code => 200, :desc => "images list" do
-      property :data, Array, of: Hash, :desc => "Information about saved image" do
-        param_group :image_data
-      end
-      param_group :errors_data
-    end
-    param_group :device_token
     def index
       render_json data: images_set(@device.images)
     end
 
-    api :GET, "api/images/:id", "Image show"
-    error :code => 404, :desc => "Image not found"
-    error :code => 500, :desc => "Internal server error"
-    formats ['file']
-    returns :code => 200, :desc => "image"
-    param_group :device_token
     def show
       content = @image.file.read
       if stale?(etag: content, public: true)
@@ -34,18 +17,6 @@ module Api::V2
       end
     end
 
-    api :POST, "api/images/:id", "Image upload"
-    error :code => 404, :desc => "Device not found"
-    error :code => 500, :desc => "Internal server error"
-    param :file, Hash, :desc => "Image data", :required => true do
-      param :filename, String, :desc => "Name of file with extension", :required => true
-      param :width, String, :desc => "Image width"
-      param :height, String, :desc => "Image height"
-      param :data, String, :desc => "Image in Base64 format", :required => true
-    end
-    formats ['json']
-    param_group :image_json
-    param_group :device_token
     def create
       command = ImageCreator.new(@device,
                                  post_params).call
@@ -53,16 +24,6 @@ module Api::V2
       render_image_json(command)
     end
 
-    api :PUT, "api/images/:id", "Resized already uploaded image"
-    error :code => 404, :desc => "Image or Device not found"
-    error :code => 500, :desc => "Internal server error"
-    param :update, Hash, :desc => "Resize data", :required => true do
-      param :width, String, :desc => "Image width"
-      param :height, String, :desc => "Image height"
-    end
-    formats ['json']
-    param_group :image_json
-    param_group :device_token
     def update
       command =
         ImageResizer.new(@image.device,

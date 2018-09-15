@@ -1,4 +1,4 @@
-module Api::Concerns::ApipieDefinitions
+module Api::ParamGroupsDocExtend
   extend ActiveSupport::Concern
 
   included do
