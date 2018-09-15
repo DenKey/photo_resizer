@@ -1,6 +1,6 @@
 module Api::V2
   class ImageController < Api::BaseController
-    before_action :set_device, only: [:index, :create]
+    before_action :set_device
     before_action :set_image, only: [:show, :update]
     skip_before_action :authenticate_user
 
@@ -23,6 +23,10 @@ module Api::V2
       end
     end
 
+    def_param_group :device_token do
+      meta :message => "Authorization header must contain device token"
+    end
+
     def index
       render_json data: images_set(@device.images)
     end
@@ -32,6 +36,7 @@ module Api::V2
     error :code => 500, :desc => "Internal server error"
     formats ['file']
     returns :code => 200, :desc => "image"
+    param_group :device_token
     def show
       content = @image.file.read
       if stale?(etag: content, public: true)
@@ -51,6 +56,7 @@ module Api::V2
     end
     formats ['json']
     param_group :image_json
+    param_group :device_token
     def create
       command = ImageCreator.new(@device,
                                  post_params).call
@@ -58,7 +64,7 @@ module Api::V2
       render_image_json(command)
     end
 
-    api :PUT, "api/images/:id/:image_id", "Resized already uploaded image"
+    api :PUT, "api/images/:id", "Resized already uploaded image"
     error :code => 404, :desc => "Image or Device not found"
     error :code => 500, :desc => "Internal server error"
     param :update, Hash, :desc => "Resize data" do
@@ -67,6 +73,7 @@ module Api::V2
     end
     formats ['json']
     param_group :image_json
+    param_group :device_token
     def update
       command =
         ImageResizer.new(@image.device,
@@ -97,7 +104,7 @@ module Api::V2
 
     def set_image
       begin
-        @image = Image.find_by(id: params[:image_id])
+        @image = Image.find_by(id: params[:id], device_id: @device.id)
       rescue Mongoid::Errors::DocumentNotFound
         raise Api::RecordNotFound.new("Image not found")
       end
@@ -105,9 +112,10 @@ module Api::V2
 
     def set_device
       begin
-        @device = Device.find_by(id: params[:id])
+        @device = Device.
+          find_by(token: request.headers.fetch(:authorization, nil))
       rescue Mongoid::Errors::DocumentNotFound
-        raise Api::RecordNotFound.new("Device not found")
+        raise Api::DeviceNotFound.new
       end
     end
 
@@ -121,7 +129,7 @@ module Api::V2
       {
         id: image.id.to_s,
         filename: image.filename,
-        url: api_image_url(image_id: image.id),
+        url: api_image_url(id: image.id),
         width: image.width,
         height: image.height,
         width_param: image.width_param,

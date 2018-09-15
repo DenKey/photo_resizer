@@ -18,10 +18,10 @@ Rails.application.routes.draw do
 
     scope module: :v2, constraints: ApiVersionConstraint.new(version: 2) do
       post 'device_enrollment' => 'device_enrollment#create'
-      post 'images/:id' => 'image#create'
-      put 'images/:id/:image_id' => 'image#update'
-      get 'images/:id' => 'image#index'
-      get 'images/:id/:image_id' => 'image#show', as: :image
+      get 'images' => 'image#index'
+      post 'images' => 'image#create'
+      put 'images/:id' => 'image#update'
+      get 'images/:id' => 'image#show', as: :image
     end
   end
 end
