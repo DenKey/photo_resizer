@@ -1,8 +1,8 @@
 class ImageCreator
   prepend SimpleCommand
 
-  def initialize(device, params)
-    @device = device
+  def initialize(receiver, params)
+    @receiver = receiver
     @params = params
   end
 
@@ -10,14 +10,14 @@ class ImageCreator
     width = @params["width"]
     height = @params["height"]
 
-    image = @device.images.new(filename: @params["filename"],
-                               width_param: width,
-                               height_param: height)
+    image = @receiver.images.new(filename: @params["filename"],
+                                 width_param: width,
+                                 height_param: height)
     image.file = @params["data"]
     image.save!
 
     if width && height
-      image = ImageResizer.new(@device,
+      image = ImageResizer.new(@receiver,
                                image,
                                width,
                                height).call.result

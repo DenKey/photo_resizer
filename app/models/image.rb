@@ -16,5 +16,6 @@ class Image
     end
   )
 
-  belongs_to :device
+  belongs_to :device, optional: true
+  belongs_to :user, optional: true
 end

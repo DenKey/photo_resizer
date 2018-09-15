@@ -15,6 +15,10 @@ Rails.application.routes.draw do
       get 'build/:build_number' => 'build#show'
       post 'user_token' => 'user_token#create'
       post 'user_enrollment' => 'user_enrollment#create'
+      get 'images' => 'images#index'
+      post 'images' => 'images#create'
+      put 'images/:id' => 'images#update'
+      get 'images/:id' => 'images#show', as: :image_v1
     end
 
     scope module: :v2, constraints: ApiVersionConstraint.new(version: 2) do
@@ -22,7 +26,7 @@ Rails.application.routes.draw do
       get 'images' => 'images#index'
       post 'images' => 'images#create'
       put 'images/:id' => 'images#update'
-      get 'images/:id' => 'images#show', as: :image
+      get 'images/:id' => 'images#show', as: :image_v2
     end
   end
 end

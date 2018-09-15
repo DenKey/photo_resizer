@@ -1,12 +1,11 @@
-module Api::V2
+module Api::V1
   class ImagesController < BaseController
-    include Api::V2::ImagesDoc
+    include Api::V1::ImagesDoc
 
-    before_action :set_device
     before_action :set_image, only: [:show, :update]
 
     def index
-      render_json data: images_set(@device.images)
+      render_json data: images_set(current_user.images)
     end
 
     def show
@@ -18,7 +17,7 @@ module Api::V2
     end
 
     def create
-      command = ImageCreator.new(@device,
+      command = ImageCreator.new(current_user,
                                  post_params).call
 
       render_image_json(command)
@@ -26,7 +25,7 @@ module Api::V2
 
     def update
       command =
-        ImageResizer.new(@image.device,
+        ImageResizer.new(current_user,
                          @image,
                          update_params["width"],
                          update_params["height"]).call
@@ -54,18 +53,9 @@ module Api::V2
 
     def set_image
       begin
-        @image = Image.find_by(id: params[:id], device_id: @device.id)
+        @image = Image.find_by(id: params[:id], user_id: current_user.id)
       rescue Mongoid::Errors::DocumentNotFound
         raise Api::RecordNotFound.new("Image not found")
-      end
-    end
-
-    def set_device
-      begin
-        @device = Device.
-          find_by(token: request.headers.fetch(:authorization, nil))
-      rescue Mongoid::Errors::DocumentNotFound
-        raise Api::DeviceNotFound.new
       end
     end
 
@@ -79,7 +69,7 @@ module Api::V2
       {
         id: image.id.to_s,
         filename: image.filename,
-        url: api_image_v2_url(id: image.id),
+        url: api_image_v1_url(id: image.id),
         width: image.width,
         height: image.height,
         width_param: image.width_param,
