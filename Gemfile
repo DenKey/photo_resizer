@@ -27,6 +27,17 @@ gem 'config', '~> 1.7'
 # Mongoid is an ODM Framework for MongoDB
 gem 'mongoid', '~> 7.0', '>= 7.0.1'
 
+# Upload files in your Ruby applications.
+gem 'carrierwave', '~> 1.2', '>= 1.2.3'
+gem 'carrierwave-mongoid', '~> 1.1'
+gem 'carrierwave-base64', '~> 2.7'
+
+# Manipulate images with minimal use of memory via ImageMagick
+gem 'mini_magick', '~> 4.8'
+
+# Easy way to build and manage commands (service objects)
+gem 'simple_command', '~> 0.0.9'
+
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.1.0', require: false
 

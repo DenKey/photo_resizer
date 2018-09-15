@@ -7,6 +7,8 @@ class Device
   field :meid, type: String
   field :token, type: String
 
+  has_many :images
+
   validates :advertising_identifier, presence: true, uniqueness: true
   validates :token, presence: true, uniqueness: true
 
