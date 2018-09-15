@@ -1,5 +1,5 @@
 module Api::V2
-  class ImageController < Api::BaseController
+  class ImageController < BaseController
     include Api::Concerns::ApipieDefinitions
     before_action :set_device
     before_action :set_image, only: [:show, :update]
@@ -20,7 +20,7 @@ module Api::V2
       render_json data: images_set(@device.images)
     end
 
-    api :GET, "api/images/:id", "Image upload"
+    api :GET, "api/images/:id", "Image show"
     error :code => 404, :desc => "Image not found"
     error :code => 500, :desc => "Internal server error"
     formats ['file']
@@ -37,7 +37,7 @@ module Api::V2
     api :POST, "api/images/:id", "Image upload"
     error :code => 404, :desc => "Device not found"
     error :code => 500, :desc => "Internal server error"
-    param :file, Hash, :desc => "Image data" do
+    param :file, Hash, :desc => "Image data", :required => true do
       param :filename, String, :desc => "Name of file with extension", :required => true
       param :width, String, :desc => "Image width"
       param :height, String, :desc => "Image height"
@@ -56,7 +56,7 @@ module Api::V2
     api :PUT, "api/images/:id", "Resized already uploaded image"
     error :code => 404, :desc => "Image or Device not found"
     error :code => 500, :desc => "Internal server error"
-    param :update, Hash, :desc => "Resize data" do
+    param :update, Hash, :desc => "Resize data", :required => true do
       param :width, String, :desc => "Image width"
       param :height, String, :desc => "Image height"
     end

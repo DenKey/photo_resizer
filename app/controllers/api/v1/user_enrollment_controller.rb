@@ -1,5 +1,5 @@
 module Api::V1
-  class UserEnrollmentController < Api::BaseController
+  class UserEnrollmentController < BaseController
     include Api::Concerns::ApipieDefinitions
 
     skip_before_action :authenticate_user

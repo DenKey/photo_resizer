@@ -1,6 +1,8 @@
 require 'routes_constraints'
 
 Rails.application.routes.draw do
+  apipie
+
   namespace :status do
     get :static
     get :production

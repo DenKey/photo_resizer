@@ -1,5 +1,5 @@
 module Api::V2
-  class DeviceEnrollmentController < Api::BaseController
+  class DeviceEnrollmentController < BaseController
     include Api::Concerns::ApipieDefinitions
 
     skip_before_action :authenticate_user
