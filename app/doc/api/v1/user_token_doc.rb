@@ -15,7 +15,7 @@ module Api::V1
       property :jwt, Hash, :desc => "JWT for sing in"
     end
     def create
-      # stub
+      super() # simple stub not working fow Knock controller
     end
   end
 end
