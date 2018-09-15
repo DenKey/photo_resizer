@@ -1,5 +1,7 @@
 module Api::V2
   class DeviceEnrollmentController < Api::BaseController
+    include Api::Concerns::ApipieDefinitions
+
     skip_before_action :authenticate_user
     before_action :set_device, only: [:create]
 
@@ -16,11 +18,7 @@ module Api::V2
       property :data, Hash, :desc => "Hash with data" do
         property :token, String, :desc => "String that provides identification of user device"
       end
-      property :errors, Array, of: Hash, :desc => "Arrays wih errors hash" do
-        property :code, String, :desc => "Error code"
-        property :message, String, :desc => "Ruby error message"
-        property :public_message, String, :desc => "Prepared error message for client"
-      end
+      param_group :errors_data
     end
     def create
       render_json data: { token: @device.token }

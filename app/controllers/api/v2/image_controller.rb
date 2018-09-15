@@ -1,37 +1,26 @@
 module Api::V2
   class ImageController < Api::BaseController
+    include Api::Concerns::ApipieDefinitions
     before_action :set_device
     before_action :set_image, only: [:show, :update]
     skip_before_action :authenticate_user
 
-    def_param_group :image_json do
-      returns :code => 200, :desc => "a successful response" do
-        property :data, Hash, :desc => "Information about saved image" do
-          property :id, String, :desc => "Image id"
-          property :filename, String, :desc => "Name of file with extension"
-          property :url, String, :desc => "Full url address to image"
-          property :width, String, :desc => "Image final width"
-          property :height, String, :desc => "Image final height"
-          property :width_param, String, :desc => "Image height from user"
-          property :height_param, String, :desc => "Image height from user "
-        end
-        property :errors, Array, of: Hash, :desc => "Arrays wih errors hash, if present" do
-          property :code, String, :desc => "Error code"
-          property :message, String, :desc => "Ruby error message"
-          property :public_message, String, :desc => "Prepared error message for client"
-        end
+    api :GET, "api/images", "Images list "
+    error :code => 404, :desc => "Device not found"
+    error :code => 500, :desc => "Internal server error"
+    formats ['file']
+    returns :code => 200, :desc => "images list" do
+      property :data, Array, of: Hash, :desc => "Information about saved image" do
+        param_group :image_data
       end
+      param_group :errors_data
     end
-
-    def_param_group :device_token do
-      meta :message => "Authorization header must contain device token"
-    end
-
+    param_group :device_token
     def index
       render_json data: images_set(@device.images)
     end
 
-    api :GET, "api/images/:id/:image_id", "Image upload"
+    api :GET, "api/images/:id", "Image upload"
     error :code => 404, :desc => "Image not found"
     error :code => 500, :desc => "Internal server error"
     formats ['file']

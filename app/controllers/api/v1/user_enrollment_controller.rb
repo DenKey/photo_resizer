@@ -1,5 +1,7 @@
 module Api::V1
   class UserEnrollmentController < Api::BaseController
+    include Api::Concerns::ApipieDefinitions
+
     skip_before_action :authenticate_user
 
     api :POST, "api/user_enrollment", "User enrollment"
@@ -12,11 +14,7 @@ module Api::V1
     formats ['json']
     returns :code => 200, :desc => "a successful response" do
       property :data, NilClass, :desc => "Empty field"
-      property :errors, Array, of: Hash, :desc => "Arrays wih errors hash" do
-        property :code, String, :desc => "Error code"
-        property :message, String, :desc => "Ruby error message"
-        property :public_message, String, :desc => "Prepared error message for client"
-      end
+      param_group :errors_data
     end
     def create
       begin

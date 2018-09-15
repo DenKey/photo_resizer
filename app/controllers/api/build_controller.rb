@@ -1,5 +1,6 @@
 module Api
   class BuildController < Api::BaseController
+    include Api::Concerns::ApipieDefinitions
     skip_before_action :authenticate_user
     before_action :get_build, only: [:show]
 
@@ -12,11 +13,7 @@ module Api
       property :data, Hash, :desc => "Data body" do
         property :support_level, Build::SUPPORT_LEVELS, :desc => "Supported level"
       end
-      property :errors, Array, of: Hash, :desc => "Arrays wih errors hash" do
-        property :code, String, :desc => "Error code"
-        property :message, String, :desc => "Ruby error message"
-        property :public_message, String, :desc => "Prepared error message for client"
-      end
+      param_group :errors_data
     end
     def show
       render_json data: { support_level: @build.support_level }

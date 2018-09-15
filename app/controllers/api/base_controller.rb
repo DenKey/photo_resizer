@@ -9,7 +9,6 @@ module Api
     STATUS_USER_ENROLLMENT_FAILED_ERROR = 422
     STATUS_SERVER_ERROR = 500
 
-
     def render_json(data: nil, errors: [], status: 200)
       render json: {
         data: data,
