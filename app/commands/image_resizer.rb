@@ -19,7 +19,9 @@ class ImageResizer
     base64_image = Base64.encode64(File.read(resized_image.path))
     base64_data = "data:image/jpg;base64,#{base64_image}"
 
-    new_image = @device.images.new
+    new_image = @device.images.new(filename: @image.filename,
+                                   width_param: @width,
+                                   height_param: @height)
     new_image.file = base64_data
     new_image.save!
     new_image

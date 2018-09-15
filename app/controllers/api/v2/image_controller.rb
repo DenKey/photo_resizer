@@ -10,8 +10,10 @@ module Api::V2
           property :id, String, :desc => "Image id"
           property :filename, String, :desc => "Name of file with extension"
           property :url, String, :desc => "Full url address to image"
-          property :width, String, :desc => "Image width"
-          property :height, String, :desc => "Image height"
+          property :width, String, :desc => "Image final width"
+          property :height, String, :desc => "Image final height"
+          property :width_param, String, :desc => "Image height from user"
+          property :height_param, String, :desc => "Image height from user "
         end
         property :errors, Array, of: Hash, :desc => "Arrays wih errors hash, if present" do
           property :code, String, :desc => "Error code"
@@ -121,7 +123,9 @@ module Api::V2
         filename: image.filename,
         url: api_image_url(image_id: image.id),
         width: image.width,
-        height: image.height
+        height: image.height,
+        width_param: image.width_param,
+        height_param: image.height_param
       }
     end
   end

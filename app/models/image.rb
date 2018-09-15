@@ -5,6 +5,8 @@ class Image
   field :filename, type: String
   field :width, type: String
   field :height, type: String
+  field :width_param, type: String
+  field :height_param, type: String
 
   mount_base64_uploader :file, ImageUploader
 

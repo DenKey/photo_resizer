@@ -7,12 +7,15 @@ class ImageCreator
   end
 
   def call
-    image = @device.images.new(filename: @params["filename"])
+    width = @params["width"]
+    height = @params["height"]
+
+    image = @device.images.new(filename: @params["filename"],
+                               width_param: width,
+                               height_param: height)
     image.file = @params["data"]
     image.save!
 
-    width = @params["width"]
-    height = @params["height"]
     if width && height
       image = ImageResizer.new(@device,
                                image,
