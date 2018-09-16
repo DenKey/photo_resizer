@@ -24,3 +24,6 @@ Open path `/apipie` on you applciation instance (`http://localhost:3000/` for ex
 
 Use next auth data, login: `api_developer` password: `someofus123`
 
+## Tests
+
+Look at documents USER_TESTS_CURLS.md and DEVICE_TESTS_CURLS.md in root of this repository
