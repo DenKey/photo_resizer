@@ -8,6 +8,9 @@ class Image
   field :width_param, type: String
   field :height_param, type: String
 
+  # Prevent creating empty Image record
+  validates :file, presence: true
+
   mount_base64_uploader :file, ImageUploader
 
   MIME::Types.add(
