@@ -6,7 +6,7 @@ class User
   field :email, type: String
   field :password_digest, type: String
 
-  has_many :images
+  has_many :images, as: :imagable
 
   validates :email, presence: true, uniqueness: true
   validates_format_of  :email, :with => /\A[\+A-Z0-9\._%-]+@([A-Z0-9-]+\.)+[A-Z]{2,4}\z/i

@@ -54,7 +54,7 @@ module Api::V2
 
     def set_image
       begin
-        @image = Image.find_by(id: params[:id], device_id: @device.id)
+        @image = Image.find_by(id: params[:id], imagable_type: "Device", imagable_id: @device.id)
       rescue Mongoid::Errors::DocumentNotFound
         raise Api::RecordNotFound.new("Image not found")
       end

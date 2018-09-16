@@ -7,7 +7,7 @@ class Device
   field :meid, type: String
   field :token, type: String
 
-  has_many :images
+  has_many :images, as: :imagable
 
   validates :advertising_identifier, presence: true, uniqueness: true
   validates :token, presence: true, uniqueness: true
@@ -21,6 +21,6 @@ class Device
   end
 
   def generate_token
-    Digest::SHA256.hexdigest(advertising_identifier + imei + meid)
+    Digest::SHA256.hexdigest(advertising_identifier.to_s + imei.to_s + meid.to_s)
   end
 end

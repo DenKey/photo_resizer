@@ -16,6 +16,5 @@ class Image
     end
   )
 
-  belongs_to :device, optional: true
-  belongs_to :user, optional: true
+  belongs_to :imagable, polymorphic: true
 end
