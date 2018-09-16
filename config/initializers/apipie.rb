@@ -16,4 +16,16 @@ Apipie.configure do |config|
   config.app_info = <<-DOC
     Mobile app that allows a user to resize uploaded photos
   DOC
+  config.app_info["1.0"] = <<-DOC
+    Each request must contains header key 'Accept' with value 'version=1'.
+
+    For authorization header key 'Authorzation' must contains 'Bearer: USER_TOKEN'.
+    USER_TOKEN user get by /api/user_token after enrollment on /api/user_enrollment
+  DOC
+  config.app_info["1.0"] = <<-DOC
+    Each request must contains header key 'Accept' with value 'version=2'.
+
+    For authorization header key 'Authorzation' must contains device token from
+    /api/device_enrollment
+  DOC
 end
