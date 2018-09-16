@@ -1,24 +1,26 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## Install
 
-Things you may want to cover:
+* Install `mongodb`
 
-* Ruby version
+* Download files to work directory
 
-* System dependencies
+* Open work directory and install gems by `bundle install`
 
-* Configuration
+* Done
 
-* Database creation
+## Development run
 
-* Database initialization
+* Open console and run MongoDB by `mongod`
 
-* How to run the test suite
+* Open work directory in console and run `rails c`
 
-* Services (job queues, cache servers, search engines, etc.)
+* Done
 
-* Deployment instructions
+## Documentation
 
-* ...
+Open path `/apipie` on you applciation instance (`http://localhost:3000/` for examlpe)
+
+Use next auth data, login: `api_developer` password: `someofus123`
+
