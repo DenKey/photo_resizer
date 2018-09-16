@@ -23,7 +23,12 @@ class ImageResizer
                                      width_param: @width,
                                      height_param: @height)
     new_image.file = base64_data
-    new_image.save!
+    begin
+      new_image.save!
+    rescue Mongoid::Errors::Validations => e
+      errors.add(:validation, e.message)
+      return nil
+    end
     new_image
   end
 end

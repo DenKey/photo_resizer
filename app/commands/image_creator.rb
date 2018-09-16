@@ -14,7 +14,12 @@ class ImageCreator
                                  width_param: width,
                                  height_param: height)
     image.file = @params["data"]
-    image.save!
+    begin
+      image.save!
+    rescue Mongoid::Errors::Validations => e
+      errors.add(:validation, e.message)
+      return nil
+    end
 
     if width && height
       image = ImageResizer.new(@receiver,
