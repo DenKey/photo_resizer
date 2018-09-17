@@ -9,6 +9,5 @@ describe Image do
   it { is_expected.to have_field(:width_param).of_type(String) }
   it { is_expected.to have_field(:height_param).of_type(String) }
 
-  it { is_expected.to belong_to(:device) }
-  it { is_expected.to belong_to(:user) }
+  it { is_expected.to belong_to(:imagable) }
 end
