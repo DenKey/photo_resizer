@@ -14,7 +14,7 @@ describe User do
 
   it { is_expected.to validate_format_of(:email).to_allow("valid@mail.com").not_to_allow("invalid") }
 
-  it "password_digest was generated" do
+  it "password_digest was generated", :generator_test_data do
     user = create_user
 
     expect(user.password_digest).not_to be_nil

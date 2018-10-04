@@ -15,7 +15,7 @@ describe Device do
 
   it { is_expected.to have_many(:images) }
 
-  it "token was generated" do
+  it "token was generated", :generator_test_data do
     device = create_device
 
     expect(device.token).not_to be_nil

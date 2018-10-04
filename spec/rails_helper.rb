@@ -45,7 +45,7 @@ RSpec.configure do |config|
   config.mock_with :rspec
 
   config.include Mongoid::Matchers
-  config.include GeneratorTestData
+  config.include GeneratorTestData, :generator_test_data
 
   config.before(:suite) do
     DatabaseCleaner.strategy = :truncation
