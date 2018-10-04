@@ -56,6 +56,18 @@ RSpec.configure do |config|
     DatabaseCleaner.clean
   end
 
+  config.before(:each, :routes_api_v1) do
+    allow_any_instance_of(ActionDispatch::Request).to receive(:headers) do
+      { accept: 'version=1' }
+    end
+  end
+
+  config.before(:each, :routes_api_v2) do
+    allow_any_instance_of(ActionDispatch::Request).to receive(:headers) do
+      { accept: 'version=2' }
+    end
+  end
+
   # RSpec Rails can automatically mix in different behaviours to your tests
   # based on their file location, for example enabling you to call `get` and
   # `post` in specs under `spec/controllers`.
