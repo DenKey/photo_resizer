@@ -19,4 +19,8 @@ describe User do
 
     expect(user.password_digest).not_to be_nil
   end
+
+  it "described class is User" do
+    expect(described_class).to eq(User)
+  end
 end

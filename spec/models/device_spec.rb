@@ -20,4 +20,8 @@ describe Device do
 
     expect(device.token).not_to be_nil
   end
+
+  it "described class is Device" do
+    expect(described_class).to eq(Device)
+  end
 end
